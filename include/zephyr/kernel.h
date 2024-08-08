@@ -1650,6 +1650,9 @@ static inline k_ticks_t z_impl_k_timer_expires_ticks(
  * This routine computes the time remaining before a running timer
  * next expires, in units of system ticks.  If the timer is not
  * running, it returns zero.
+ *
+ * @param timer The timer object
+ * @return Remaining time until expiration, in ticks
  */
 __syscall k_ticks_t k_timer_remaining_ticks(const struct k_timer *timer);
 
@@ -3457,7 +3460,7 @@ void k_work_queue_init(struct k_work_q *queue);
  *
  * @param stack pointer to the work thread stack area.
  *
- * @param stack_size size of the the work thread stack area, in bytes.
+ * @param stack_size size of the work thread stack area, in bytes.
  *
  * @param prio initial thread priority
  *
@@ -3632,6 +3635,8 @@ static inline k_ticks_t k_work_delayable_remaining_get(
  *
  * @retval 0 if work was already scheduled or submitted.
  * @retval 1 if work has been scheduled.
+ * @retval 2 if @p delay is @c K_NO_WAIT and work
+ *         was running and has been queued to the queue that was running it.
  * @retval -EBUSY if @p delay is @c K_NO_WAIT and
  *         k_work_submit_to_queue() fails with this code.
  * @retval -EINVAL if @p delay is @c K_NO_WAIT and
